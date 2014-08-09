@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sample.board.dao.UserDao">
+    <insert id="add" parameterType="user">
+        INSERT INTO user(id, password) VALUES(#{id}, #{password})
+        <selectKey keyProperty="seq" resultType="int">
+            select top 1 identity() from user
+        </selectKey>
+    </insert>
+    
+    <select id="findAll" resultType="user">
+        SELECT * FROM user
+    </select>
+    
+    <select id="findById" parameterType="String" resultType="user">
+        SELECT 
+            seq,
+            id,
+            password,
+            to_char(regDate, 'YYYY-MM-DD HH24:MI:SS') regDate,
+            to_char(modDate, 'YYYY-MM-DD HH24:MI:SS') modDate
+        FROM
+            user
+        WHERE id = #{value}
+    </select>
+    
+    <delete id="deleteAll">
+        DELETE FROM user
+    </delete>
+</mapper>
